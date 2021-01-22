@@ -19,11 +19,10 @@ fn main() {
   greetings();
 
   // udp
-  // let addr = SocketAddrV4::new(
-  //   Ipv4Addr::new(LOCAL_IP.0, LOCAL_IP.1, LOCAL_IP.2, LOCAL_IP.3),
-  //   LOCAL_PORT,
-  // );
-  let addr = SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), LOCAL_PORT);
+  let addr = SocketAddrV4::new(
+    Ipv4Addr::new(LOCAL_IP.0, LOCAL_IP.1, LOCAL_IP.2, LOCAL_IP.3),
+    LOCAL_PORT,
+  );
   let socket = UdpSocket::bind(addr).expect("couldn't bind to address");
   println!("Listening on port {} / full addr: {}", addr.port(), addr);
 
@@ -49,5 +48,5 @@ fn main() {
 }
 
 fn greetings() {
-  println!("hellooooooo");
+  println!("*********BELA-I2C***********");
 }

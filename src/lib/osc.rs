@@ -67,9 +67,14 @@ fn send_osc(socket: &UdpSocket) -> Result<(), error::OscErrors> {
     args: vec![OscType::Int(112), OscType::Float(3.14)],
   });
 
+  let _remote_ip = SocketAddr::from((
+    [REMOTE_IP.0, REMOTE_IP.1, REMOTE_IP.2, REMOTE_IP.3],
+    REMOTE_PORT,
+  ));
+  let mut __remote_ip = _remote_ip.to_socket_addrs().unwrap();
+
   match rosc::encoder::encode(&packet) {
-    // Ok(p) => socket.send_to(&p, "192.168.7.2:7562").unwrap(),
-    Ok(p) => socket.send_to(&p, "127.0.0.1:7562").unwrap(),
+    Ok(p) => socket.send_to(&p, __remote_ip.next().unwrap()).unwrap(),
     Err(e) => return Err(error::OscErrors::NoSetAction),
   };
 
