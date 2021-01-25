@@ -15,7 +15,7 @@ then
     curl -o $PACKAGE http://files.bela.io/gcc/$PACKAGE
     unzip $PACKAGE
     rm $PACKAGE
-    echo $'[target.armv7-unknown-linux-gnueabihf]\nlinker =  "arm-bela-linux-gnueabihf/bin/arm-bela-linux-gnueabihf-gcc"\n' > .cargo/config
+    echo $'[target.armv7-unknown-linux-gnueabihf]\nlinker =  "arm-bela-linux-gnueabihf-gcc"\n' > .cargo/config
   elif [ "$host" = "Linux" ]; then
     PACKAGE="gcc-linaro-6.3.1-2017.02-x86_64_arm-linux-gnueabihf.tar.xz"
     wget https://releases.linaro.org/components/toolchain/binaries/6.3-2017.02/arm-linux-gnueabihf/$PACKAGE
@@ -24,6 +24,7 @@ then
     rm -r $PACKAGE
     echo $'[target.armv7-unknown-linux-gnueabihf]\nlinker =  "arm-linux-gnueabihf-gcc"\n' > .cargo/config
   fi
-fi
 
-export PATH=$PATH:`pwd`/$DIRECTORY/bin
+  # not sure why export PATH is not working?
+  export PATH=$PATH:`pwd`/$DIRECTORY/bin
+fi

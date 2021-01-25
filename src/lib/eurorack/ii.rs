@@ -1,10 +1,10 @@
 use super::*;
-use std::num::Wrapping;
-// use rppal::i2c::I2c;
 use super::*;
 use crate::lib::eurorack::*;
 use crate::lib::settings;
+// use rppal::i2c::I2c;
 use std::error::Error;
+use std::num::Wrapping;
 
 // #[allow(unused_assignments)]
 

@@ -4,5 +4,6 @@
     "editor.defaultFormatter": "rust-lang.rust"
   },
   "editor.formatOnSave": true,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "rust.target": "armv7-unknown-linux-gnueabihf"
 }

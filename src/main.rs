@@ -11,6 +11,7 @@ use std::error::Error;
 use std::fmt;
 use std::net::{Ipv4Addr, SocketAddrV4, UdpSocket};
 use std::{thread, time};
+// extern crate rppal;
 
 mod lib;
 use lib::{error, osc};
@@ -48,5 +49,5 @@ fn main() {
 }
 
 fn greetings() {
-  println!("*********BELA-I2C***********");
+  println!("------------BELA-I2C------------");
 }
