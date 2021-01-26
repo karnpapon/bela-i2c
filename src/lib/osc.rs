@@ -20,6 +20,7 @@ pub fn handle_packet(packet: OscPacket, socket: &UdpSocket) -> Result<(), error:
             return Err(error::OscErrors::NoSetAction);
           }
         },
+        "er301" => handle_osc_ii(&msg.addr).unwrap(),
         _ => {
           println!("addr {:?}", msg.addr);
           // handle Blob here.
@@ -79,4 +80,9 @@ fn send_osc(socket: &UdpSocket) -> Result<(), error::OscErrors> {
   };
 
   Ok(())
+}
+
+fn handle_osc_ii(msg: &str) -> Result<(), error::OscErrors>{
+    println!("handle osc ii = {}", msg);
+    Ok(())
 }

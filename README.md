@@ -2,6 +2,19 @@
 
 i2c communication to Eurorack (eg. ER301, Teletype, etc) for [Bela](https://bela.io/) written in Rust, inspired by [hans](https://llllllll.co/t/hans/36455/14), currently in progress...
 
+
+# Quick Start (re-write later)
+```
+# run bela-osc
+cd ~/bela-i2c
+make -C ~/Bela EXAMPLE=Communication/OSC run CL="-p16"OA
+
+# run rust-osc.
+cargo run
+```
+
+------------------------------------
+below is deprecated need to rewrite.
 # Setup
 
 Install the toolchain (the Beaglebone black):
