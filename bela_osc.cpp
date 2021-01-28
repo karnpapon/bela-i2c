@@ -38,21 +38,19 @@ void on_receive(oscpkt::Message* msg, void* arg)
 	if(msg->match("/osc-setup-reply"))
 		handshakeReceived = true;
 	else if(msg->match("/osc-test")){
-		int intArg;
-		float floatArg;
-		msg->match("/osc-test").popInt32(intArg).popFloat(floatArg).isOkNoMoreArgs();
-		printf("received a message with int %i and float %f\n", intArg, floatArg);
-		oscSender.newMessage("/osc-acknowledge").add(intArg).add(4.2f).add(std::string("OSC message received")).send();
+		oscSender.newMessage("/osc-acknowledge").add(std::string("OSC message received")).send();
 	} else {
 		if(handshakeReceived){
 			auto _arg = msg->arg();
 			std::string str;
-			int intArg;
-			float floatArg;
+			int iArg1;
+      int iArg2;
+      std::string sArg1;
 
-			_arg.popInt32(intArg);
-			_arg.popFloat(floatArg);
-		oscSender.newMessage(msg->addressPattern()).add(intArg).add(floatArg).send();	
+			_arg.popInt32(iArg1);
+			_arg.popStr(sArg1);
+      _arg.popInt32(iArg2);
+		oscSender.newMessage(msg->addressPattern()).add(iArg1).add(sArg1).add(iArg2).send();	
 		}
 	} 
 }
@@ -75,7 +73,7 @@ bool setup(BelaContext *context, void *userData)
 	if (handshakeReceived) {
 		printf("handshake received!\n");
 	} else {
-		printf("timeout! : did you start the node server? `node /root/Bela/resources/osc/osc.js\n");
+		printf("timeout!: you didn't start osc server.\n");
 		return false;
 	}
 	return true;
