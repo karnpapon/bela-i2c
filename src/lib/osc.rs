@@ -89,26 +89,37 @@ fn send_osc(socket: &UdpSocket) -> Result<(), error::OscErrors> {
 fn route_eurorack_module(msg: &rosc::OscMessage, path: Vec<&str>) {
     println!("msg = {:?}", msg); //eg. OscMessage { addr: "/er301", args: [Float(0.0), Float(0.0)] }
     //println!("path = {:?}", &path); //eg. ["er301"]
-    //let mut data: Vec<u16> = Vec::new();
+    let mut data: Vec<u16> = Vec::new();
     let m = msg.args.to_vec();
     let _cmd_args: Option<eurorack::Command> = None;
 
     
-    let module_number = m[0].clone().int().unwrap() as usize;
-    let port_number = m[2].clone().int().unwrap() as u8;
-    let cmd = &m[1];
-    let cmd_param = get_command_param(&m).unwrap();
+     for i in m {
+        match i {
+            OscType::Int(value) => data.push(value as u16),
+            _ => ()
+        }
+    }
+
+    //let module_number = m[0].clone().int().unwrap() as usize;
+    //let port_number = m[2].clone().int().unwrap() as u8;
+    //let cmd = &m[1];
+    //let cmd_param = get_command_param(&m).unwrap();
+
+    let module_number = get_module_number(&path[1]);
+    let port_number = get_port_number(&path);
 
     let module_name = match path[0] {
         "er301" | "Er301" => Some(eurorack::EuroModules::Er301),
         _ => None,
     };
 
-
-    if let Some(module_name) = module_name {
-        let command = get_module_command(&module_name, &cmd.clone().string().unwrap());
+ if let (Some(module_name), Some(module_number), Some(port_number)) = (module_name, module_number, port_number) {
+    //if let Some(module_name) = module_name {
+        //let command = get_module_command(&module_name, &cmd.clone().string().unwrap());
+        let command = get_module_command(&module_name, &path[2]);
         println!("command = {:?}", command);
-        match ii::send_i2c(module_name, module_number, port_number, command, cmd_param) {
+        match ii::send_i2c(module_name, module_number, port_number, command, data) {
          Ok(_) => {},
          Err(_) => println!("Unreachable module"),
         }
@@ -128,42 +139,42 @@ fn get_module_command(
     cmd
 }
 
-fn get_command_param(osc_msg: &[OscType]) -> Option<Vec<u16>>{
-    let mut _param = Vec::new();
-    if let Some(param) = osc_msg.iter().nth(3) {
-        if let OscType::Int(value) = param { 
-            _param.push(*value as u16)
-        }
-    }
-
-    if _param.len() > 0 {
-        Some(_param)
-    } else {
-        None
-    }
-}
+//fn get_command_param(osc_msg: &[OscType]) -> Option<Vec<u16>>{
+//    let mut _param = Vec::new();
+//    if let Some(param) = osc_msg.iter().nth(3) {
+//        if let OscType::Int(value) = param { 
+//            _param.push(*value as u16)
+//        }
+//    }
+//
+//    if _param.len() > 0 {
+//        Some(_param)
+//    } else {
+//        None
+//    }
+//}
 
 //fn route_custom_action(_msg: &rosc::OscMessage, _path: Vec<&str>) {
 //    println!("Custom Action!");
 //}
 
-//fn get_module_number(module: i32) -> Option<usize> {
-//    match module.parse::<usize>() {
-//        Ok(value) => Some(value),
-//        Err(_) => None,
-//    }
-//}
+fn get_module_number(module: &str) -> Option<usize> {
+    match module.parse::<usize>() {
+        Ok(value) => Some(value),
+        Err(_) => None,
+    }
+}
 
 
-// fn get_port_number(path: &Vec<&str>) -> Option<u8> {
-//     let port: Option<u8>;
-//     if path.len() == 4 {
-//         match path[3].parse::<u8>() {
-//             Ok(value) => port = Some(value),
-//             Err(_) => port = None,
-//         }
-//     } else {
-//         port = None
-//     }
-//     port
-// }
+ fn get_port_number(path: &Vec<&str>) -> Option<u8> {
+     let port: Option<u8>;
+     if path.len() == 4 {
+         match path[3].parse::<u8>() {
+             Ok(value) => port = Some(value),
+             Err(_) => port = None,
+         }
+     } else {
+         port = None
+     }
+     port
+ }
