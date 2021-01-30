@@ -43,14 +43,16 @@ void on_receive(oscpkt::Message* msg, void* arg)
 		if(handshakeReceived){
 			auto _arg = msg->arg();
 			std::string str;
-			int iArg1;
-      int iArg2;
-      std::string sArg1;
+			int module_number;
+      int port_number;
+      int command_param;
+      std::string command;
 
-			_arg.popInt32(iArg1);
-			_arg.popStr(sArg1);
-      _arg.popInt32(iArg2);
-		oscSender.newMessage(msg->addressPattern()).add(iArg1).add(sArg1).add(iArg2).send();	
+			_arg.popInt32(module_number);
+			_arg.popStr(command);
+      _arg.popInt32(port_number);
+      _arg.popInt32(command_param);
+		oscSender.newMessage(msg->addressPattern()).add(module_number).add(command).add(port_number).add(command_param).send();	
 		}
 	} 
 }

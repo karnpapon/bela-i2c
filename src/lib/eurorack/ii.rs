@@ -15,7 +15,7 @@ pub fn send_i2c(
    command: Option<Command>,
    data: Vec<u16>,
  ) -> Result<(), Box<dyn Error>> {
-   let mut i2c = I2c::with_bus(settings::I2CBUS)?;
+   let mut i2c = I2c::with_bus(settings::I2CBUS).unwrap();
    let cmd = command;
    let module_address: Option<usize> = get_module_address(&module_name, module_number);
    let mut match_args = false;
@@ -34,20 +34,18 @@ pub fn send_i2c(
    if let (Some(module_address), true) = (module_address, match_args) {
      let buffer = format_the_buffer(data, port);
      let final_buffer: &[u8] = &buffer;
-     //i2c.set_slave_address(module_address as u16)?;
-     //i2c.block_write(cmd_addr, final_buffer)?;
+     i2c.set_slave_address(module_address as u16).unwrap();
+     i2c.block_write(cmd_addr, final_buffer).unwrap();
 
-     println!("{:?}, {:?}, {:?}", module_address, cmd_addr, buffer)
+     println!("module_address = {:?},cmd_addr = {:?},buffer = {:?}", module_address, cmd_addr, buffer)
    }
    Ok(())
  }
 
  fn get_module_address(module_name: &EuroModules, module_number: usize) -> Option<usize> {
    let addr;
-   // get the address if the module number matches
    match module_name {
-     EuroModules::Er301 => addr = Some(er301::ADDRESSES[((module_number + 3 - 1) % 3)]), // Modulo trick
-                                                                                         // EuroModules::Txo => addr = Some(txo::ADDRESSES[((module_number + 8 - 1) % 8)]),
+     EuroModules::Er301 => addr = Some(er301::ADDRESSES[((module_number + 3 - 1) % 3)]), // wrapped overflowed value
    }
    addr
  }
@@ -55,14 +53,16 @@ pub fn send_i2c(
  fn offset_port_number(module_name: &EuroModules, port: u8) -> Option<u8> {
    let port_number;
    match module_name {
-     EuroModules::Er301 => port_number = Some((port + 101 - 1) % 101), // Modulo trick
-                                                                       // EuroModules::Txo => port_number = Some((port + 9 - 1) % 9),
+     EuroModules::Er301 => port_number = Some((port + 101 - 1) % 101), 
    }
    port_number
  }
 
  fn format_the_buffer(data: Vec<u16>, port: u8) -> Vec<u8> {
    // create a buffer -array of bytes- with the port number and the data
+   // data type is u16 = 2^16 = max value = 65,536;
+   // since bytes = 2^8 so 2^16, the buffer data will be represented by [port_value,2^8,2^8] (big-endian bytes order);
+   // overflow value ( > 65,536 will be wrapped)
    let mut buffer: Vec<u8> = Vec::new();
    buffer.push(port);
    for i in data {
