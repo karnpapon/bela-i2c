@@ -7,6 +7,8 @@ i2c communication to Eurorack (eg. ER301, Teletype, etc) for [Bela](https://bela
 ```
 # run bela-osc
 cd ~/bela-i2c
+# copy render.cpp to ~/Bela/example/Communication/OSC
+# ..then
 make -C ~/Bela EXAMPLE=Communication/OSC run CL="-p16"OA
 
 # run rust-osc.
