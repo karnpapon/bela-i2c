@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
-
-cargo build --release --target=armv7-unknown-linux-gnueabihf
-scp target/armv7-unknown-linux-gnueabihf/release/bela-i2c root@bela.local:~
+mkdir -p ~/Bela/projects/bela-i2c
+cp -r libbela/render.cpp ~/Bela/projects/bela-i2c
+echo ' cp to project done'
+cd ~/Bela/scripts
+./build_project.sh ../projects/bela-i2c --force
