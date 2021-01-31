@@ -1,13 +1,8 @@
-// pub use super::er301;
 use crate::lib::eurorack::*;
-// pub use super::Bufsize;
-// pub use super::Command;
 
-// addresses
+// cv use 14bits = 16284 to represent 0 ~ 10v.
 
 pub const ADDRESSES: [usize; 3] = [0x31, 0x32, 0x33];
-
-// commands
 pub enum Cmd {
   Tr,
   TrTog,
@@ -63,6 +58,7 @@ pub const TR_PULSE: Command = Command {
   required: 0,
 };
 pub const TR_TIME: Command = Command {
+    // should be 0x2 ? according to teletype open-sources.
   command_number: 0x32,
   args: &[
     Arg {

@@ -61,6 +61,8 @@ fn send_handshake_reply(socket: &UdpSocket) -> Result<(), error::OscErrors> {
     Ok(())
 }
 
+
+// test sending.
 fn send_osc(socket: &UdpSocket) -> Result<(), error::OscErrors> {
     let packet = OscPacket::Message(OscMessage {
         addr: "/osc-test".to_string(),

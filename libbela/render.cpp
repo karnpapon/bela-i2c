@@ -23,18 +23,15 @@ void on_receive(oscpkt::Message* msg, void* arg)
 		oscSender.newMessage("/osc-acknowledge").add(std::string("OSC message received")).send();
 	} else {
 		if(handshakeReceived){
+
 			auto _arg = msg->arg();
 			std::string str;
-			int module_number;
-      int port_number;
       int command_param;
-      std::string command;
 
-			_arg.popInt32(module_number);
-			_arg.popStr(command);
-      _arg.popInt32(port_number);
-      _arg.popInt32(command_param);
-		oscSender.newMessage(msg->addressPattern()).add(module_number).add(command).add(port_number).add(command_param).send();	
+      if(msg->partialMatch("/er301")){
+        _arg.popInt32(command_param).isOkNoMoreArgs();
+  		  oscSender.newMessage(msg->addressPattern()).add(command_param).send();	
+      }
 		}
 	} 
 }
@@ -55,7 +52,7 @@ bool setup(BelaContext *context, void *userData)
 		usleep(100000);
 	}
 	if (handshakeReceived) {
-		printf("handshake received!\n");
+		printf("hhhhhhhhhhandshake received!\n");
 	} else {
 		printf("timeout!: you didn't start osc server.\n");
 		return false;

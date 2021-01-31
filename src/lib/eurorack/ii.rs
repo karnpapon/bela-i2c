@@ -25,7 +25,7 @@ pub fn send_i2c(
    if let Some(cmd) = cmd {
      if data.len() == cmd.required {
        match_args = true;
-       args = cmd.args;
+       //args = cmd.args;
        cmd_addr = cmd.command_number;
      }
    }
@@ -34,8 +34,8 @@ pub fn send_i2c(
    if let (Some(module_address), true) = (module_address, match_args) {
      let buffer = format_the_buffer(data, port);
      let final_buffer: &[u8] = &buffer;
-     i2c.set_slave_address(module_address as u16).unwrap();
-     i2c.block_write(cmd_addr, final_buffer).unwrap();
+   //  i2c.set_slave_address(module_address as u16).unwrap();
+    // i2c.block_write(cmd_addr, final_buffer).unwrap();
 
      println!("module_address = {:?},cmd_addr = {:?},buffer = {:?}", module_address, cmd_addr, buffer)
    }
