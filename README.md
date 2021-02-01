@@ -1,6 +1,6 @@
 # `bela-i2c`
 
-parsing msg from device to Eurorack by using [Bela](https://bela.io/) to parse OSC -> i2c for written in Rust, since Bela i2c pin requires 3.3V, for safety we might need [ logic level converter ](https://shopee.co.th/search?keyword=logic%20level%20converter%20%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B9%84%E0%B8%9F%E0%B8%9F%E0%B9%89%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%8A%E0%B9%88%E0%B8%B2%E0%B8%87&showItems=true) to use with Eurorack level (5V). inspired by [hans](https://llllllll.co/t/hans/36455/14), currently in progress...
+parsing msg from any device to Eurorack by using [Bela](https://bela.io/) to parse OSC -> i2c, since Bela i2c pin requires 3.3V, for safety we might need [ logic level converter ](https://shopee.co.th/search?keyword=logic%20level%20converter%20%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B9%84%E0%B8%9F%E0%B8%9F%E0%B9%89%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%8A%E0%B9%88%E0%B8%B2%E0%B8%87&showItems=true) to use with Eurorack level (5V). inspired by [hans](https://llllllll.co/t/hans/36455/14).
 
 
 # Quick Start (re-write later)
@@ -15,7 +15,7 @@ cargo run
 # Usage (currently support only ER-301)
 
 osc pattern = `module/module_number/command/output_port value` eg. `/er301/1/cv_slew/1 1000`
-use same configuration as Teletype( value = unsigned 14bit integer ( 16,384 = 10v ))/
+use same configuration as Teletype( value = unsigned 14bits integer ( 16,384 = 10v ))/
 
 
 # [Optional] send data via WIFI ( eg. use TouchOSC (Mobile) -> Bela )
